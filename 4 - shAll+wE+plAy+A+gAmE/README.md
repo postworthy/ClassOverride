@@ -117,4 +117,10 @@ The API returns a JSON stream; you can integrate this into lab scripts.
 
 ---
 
+## Joshua Training Resources
+
+If you are interested in the code that was used to train the Joshua model then have a look at the [WarGames AI Repo](https://github.com/postworthy/wargames-ai)
+
+---
+
 Enjoy! "Shall we play a game?"
