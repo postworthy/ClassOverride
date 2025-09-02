@@ -21,6 +21,29 @@ Visit: 👉 [http://localhost:3000](http://localhost:3000)
 
 ---
 
+# 🏁 Warm-Up Exercises
+Before diving into the OWASP Top 10 challenges, here are a few warm-up tasks to help you get familiar with the Juice Shop environment:
+
+1. **Find the Scoreboard**  🎯  
+   - The Scoreboard shows your progress and available challenges. 
+   - Try to locate it (hint: it’s not directly linked in the main navigation).
+
+2. **Leave Feedback** 📝  
+   - Find the customer feedback page.
+   - Submit a comment and see how it appears in the system.
+
+3. **Register and Log In** 🔑  
+   - Create a new account and log in.
+   - Explore the “My Account” section to understand what information is stored.
+
+4. **Browse Products and Place an Order** 🛒  
+   - Add an item to your shopping basket.
+   - Complete a checkout process to see how order tracking works.
+
+These exercises will help you understand the shop’s structure, navigation, and functionality before you start exploiting vulnerabilities.
+
+---
+
 # 🕵️ The OWASP Top 10 in Juice Shop
 
 Below you’ll find **each OWASP Top 10 item** explained with a **practical Juice Shop challenge** you can try.
@@ -141,3 +164,4 @@ Below you’ll find **each OWASP Top 10 item** explained with a **practical Juic
 - OWASP Top 10: [https://owasp.org/www-project-top-ten/](https://owasp.org/www-project-top-ten/)
 - OWASP Juice Shop: [https://github.com/juice-shop/juice-shop](https://github.com/juice-shop/juice-shop)
 - Juice Shop Guidebook: [https://pwning.owasp-juice.shop](https://pwning.owasp-juice.shop)
+- Juice Shop Explorer: [Juice Shop Explorer on ChatGPT](https://chatgpt.com/g/g-68b298e351648191b71594a29c9350a8-juice-shop-explorer)
