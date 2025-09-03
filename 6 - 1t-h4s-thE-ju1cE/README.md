@@ -164,4 +164,4 @@ Below you’ll find **each OWASP Top 10 item** explained with a **practical Juic
 - OWASP Top 10: [https://owasp.org/www-project-top-ten/](https://owasp.org/www-project-top-ten/)
 - OWASP Juice Shop: [https://github.com/juice-shop/juice-shop](https://github.com/juice-shop/juice-shop)
 - Juice Shop Guidebook: [https://pwning.owasp-juice.shop](https://pwning.owasp-juice.shop)
-- Juice Shop Explorer: [Juice Shop Explorer on ChatGPT](https://chatgpt.com/g/g-68b298e351648191b71594a29c9350a8-juice-shop-explorer)
+- Juice Shop Explorer: [JSE (gpt-5)](https://chatgpt.com/g/g-68b298e351648191b71594a29c9350a8-juice-shop-explorer) or [JSE (gpt-4o)](https://chatgpt.com/g/g-68b7b9f85d608191a8fa82bb7580508a-juice-shop-explorer-4o)
