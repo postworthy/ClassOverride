@@ -26,7 +26,7 @@ def compound_interest_game(rounds=30):
             offer = 1_000_000
         else:
             midpoint = max_value * 0.5
-            offer = round(random.uniform(1_000_000, min(midpoint, max_value - 1)), 2)
+            offer = round(random.uniform(1, min(midpoint, max_value - 1)), 2)
 
         print(f"\n\n--- Round {round_number} ---")
         print(f"💡 Current value if you HOLD: ${current_value:,.2f}")
