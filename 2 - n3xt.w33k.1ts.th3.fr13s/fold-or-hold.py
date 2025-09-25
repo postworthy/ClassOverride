@@ -59,8 +59,11 @@ if __name__ == "__main__":
     if len(sys.argv) > 1:
         try:
             rounds = int(sys.argv[1])
+            if rounds < 28:
+                print("❌ Minimum number of rounds is 28")
+                rounds = 28
         except ValueError:
-            print("Invalid input. Usage: python3 fold.py [number_of_rounds]")
+            print("Invalid input. Usage: python3 fold-or-hold.py [number_of_rounds]")
             sys.exit(1)
     else:
         rounds = 30
