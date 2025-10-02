@@ -1,12 +1,9 @@
 
 import random
 import sys
+import argparse
 
-def compound_interest_game(rounds=30):
-    max_value = round(0.01 * (2 ** (rounds - 1)), 2)
-    current_value = 0.01
-
-    print("""
+ASCII_BANNER = """
 =======================================
     ______      __________    ________
    / ____/ __  / ___/__  /___/__  /__ \\
@@ -15,13 +12,25 @@ def compound_interest_game(rounds=30):
 /_____/ /_/  \\____/ /_/      /_//____/
 
 =======================================
-""")
+"""
 
-    print(f"💰 You start with a single penny that doubles every round.")
+def compound_interest_game(rounds=30, random_losses=False, seed=None):
+    if seed is not None:
+        random.seed(seed)
+
+    max_value = round(0.01 * (2 ** (rounds - 1)), 2)
+    current_value = 0.01
+
+    print(ASCII_BANNER)
+    print(f"💰 You start with a single penny that doubles every round for {rounds} rounds")
     print(f"🏆 Your goal: decide each round whether to take a deal or double your money.")
-    print(f"⚠️  Once you accept a deal, your game ends.\n")
+    print(f"⚠️  Once you accept a deal, your game ends.")
+    if random_losses:
+        print(f"🎲 Random risk ON: There is a chance each HOLD round to suffer a catastrophic loss (your value is HALVED that round).")
+    print()
 
     for round_number in range(1, rounds + 1):
+        # Compute bank offer
         if round_number == 1:
             offer = 1_000_000
         else:
@@ -35,7 +44,7 @@ def compound_interest_game(rounds=30):
         decision = input("\nDo you want to (h)old or (f)old? ").strip().lower()
         if decision == '':
             decision = 'h'
-        while decision not in ['h', 'f', '']:
+        while decision not in ['h', 'f']:
             decision = input("Please enter 'h' to hold or 'f' to fold: ").strip().lower()
 
         if decision == 'f':
@@ -44,28 +53,45 @@ def compound_interest_game(rounds=30):
             print(f"🏁 Final round value would have been: ${max_value:,.2f}")
             break
         else:
-            if round_number == 1:
-                current_value = 0.02
-            elif round_number == rounds:
+            # HOLD path
+            if random_losses and random.randint(1, 50) == 1:
+                # Catastrophic loss event: halve value instead of doubling this round
+                before = current_value
+                current_value = round(current_value / 2, 2)
+                print(f"\n💥 Catastrophic loss event! Your value is HALVED this round: ${before:,.2f} → ${current_value:,.2f}")
+            else:
+                # Normal doubling logic
+                if round_number == 1:
+                    current_value = 0.02
+                else:
+                    current_value = round(current_value * 2, 2)
+
+            if round_number == rounds:
                 print(f"\n🎉 Congratulations! You held all {rounds} rounds.")
                 print(f"💸 Your final winnings: ${current_value:,.2f}")
                 print(f"🏦 The final bank offer was only: ${offer:,.2f}")
                 print("📚 Lesson: Patience really does pay off!")
                 break
-            else:
-                current_value *= 2
+
+
+def parse_args(argv):
+    parser = argparse.ArgumentParser(
+        description="Fold-or-Hold: a compound interest game with an optional random catastrophic loss mode (-r).",
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter
+    )
+    parser.add_argument("rounds", nargs="?", type=int, default=30,
+                        help="Number of rounds to play (minimum 28).")
+    parser.add_argument("-r", "--random", dest="random_losses", action="store_true",
+                        help="Enable random catastrophic loss events (introduces a chance on HOLD rounds to halve your value).")
+    parser.add_argument("--seed", type=int, default=None, help="Set RNG seed for reproducible runs.")
+    args = parser.parse_args(argv)
+
+    if args.rounds < 28:
+        print("❌ Minimum number of rounds is 28")
+        args.rounds = 28
+    return args
+
 
 if __name__ == "__main__":
-    if len(sys.argv) > 1:
-        try:
-            rounds = int(sys.argv[1])
-            if rounds < 28:
-                print("❌ Minimum number of rounds is 28")
-                rounds = 28
-        except ValueError:
-            print("Invalid input. Usage: python3 fold-or-hold.py [number_of_rounds]")
-            sys.exit(1)
-    else:
-        rounds = 30
-
-    compound_interest_game(rounds)
+    args = parse_args(sys.argv[1:])
+    compound_interest_game(rounds=args.rounds, random_losses=args.random_losses, seed=args.seed)
