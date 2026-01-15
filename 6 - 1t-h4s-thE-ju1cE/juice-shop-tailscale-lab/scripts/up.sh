@@ -8,17 +8,31 @@ if [[ ! -f .env ]]; then
   ./scripts/gen-env.sh
 fi
 
-# Pull image first so startup is faster/predictable
 docker compose pull
-
-# Start N replicas
 docker compose up -d --scale juice-shop="${N}"
 
 echo
-echo "Running ${N} Juice Shop instances bound to TS_IP from .env."
-echo "Team URLs (ports start at 3000):"
+echo "Discovering live port mappings (container :3000 -> host port)…"
 TS_IP="$(grep '^TS_IP=' .env | cut -d= -f2)"
-for ((i=0; i<N; i++)); do
-  port=$((3000+i))
-  echo "  Team $((i+1)): http://${TS_IP}:${port}"
+
+# List containers for this service in a stable order
+mapfile -t CIDS < <(docker compose ps -q juice-shop)
+
+if [[ "${#CIDS[@]}" -eq 0 ]]; then
+  echo "No containers found for service 'juice-shop'."
+  exit 1
+fi
+
+i=1
+for cid in "${CIDS[@]}"; do
+  # Find the published host port for container port 3000/tcp
+  host_port="$(docker inspect -f '{{(index (index .NetworkSettings.Ports "3000/tcp") 0).HostPort}}' "$cid" 2>/dev/null || true)"
+
+  if [[ -z "${host_port}" ]]; then
+    echo "  Team ${i}: (no published port found yet) container=${cid}"
+  else
+    # If you bound to TS_IP in compose.yml, the host is TS_IP; otherwise it's whatever bind address you used.
+    echo "  Team ${i}: http://${TS_IP}:${host_port}"
+  fi
+  ((i++))
 done
