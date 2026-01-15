@@ -1,0 +1,8 @@
+services:
+  juice-shop:
+    image: bkimminich/juice-shop:latest
+    restart: unless-stopped
+    ports:
+      # Publish container port 3000 onto host ports 3000-3099, bound ONLY to the host's Tailscale IP.
+      # Each replica gets the next available host port: 3000, 3001, 3002, ...
+      - "${TS_IP}:3000-3099:3000"
